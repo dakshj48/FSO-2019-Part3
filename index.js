@@ -9,6 +9,7 @@ morgan.token('data', function getData(req, res) {
 })
 
 app.use(cors())
+app.use(express.static('build'))
 app.use(bodyParser.json())
 app.use(morgan(function (tokens, req, res) {
     if(req.method === 'POST') {
