@@ -10,7 +10,8 @@
     "build:ui": "rmdir /s /Q build && cd ../FSO2019/part2/phonebook && npm run build --prod && Xcopy /E /I \"D:/College Stuff/Github/FSO2019/part2/phonebook/build\" \"D:/College Stuff/Github/FSO-2019-Part3/build\"",
     "deploy": "git push heroku master",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy",
-    "logs:prod": "heroku logs --tail"
+    "logs:prod": "heroku logs --tail",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -31,6 +32,7 @@
     "morgan": "^1.9.1"
   },
   "devDependencies": {
+    "eslint": "^6.1.0",
     "nodemon": "^1.19.1"
   }
 }
