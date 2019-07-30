@@ -32,10 +32,10 @@ app.use(morgan(function (tokens, req, res) {
     tokens['response-time'](req, res), 'ms'
   ].join(' ')
 }, {
-    function(req, res) {
-      return req.params
-    }
-  }))
+  function(req, res) {
+    return req.params
+  }
+}))
 
 app.get('/api/persons', (req, res, next) => {
   Person.find({})
@@ -81,7 +81,7 @@ app.put('/api/persons/:id', (req, res, next) => {
   const body = req.body
 
   if (body.number.length < 8) {
-    return next( { name: 'InvalidLength', message: `minimum length required for the number is 8 (curr length: ${body.number.length})` } )
+    return next({ name: 'InvalidLength', message: `minimum length required for the number is 8 (curr length: ${body.number.length})` })
   }
 
   const person = {
@@ -100,10 +100,10 @@ app.post('/api/persons', (req, res, next) => {
   const body = req.body
 
   if (!body.name) {
-    return next( { name: 'MissingName', message: 'name missing in the request'} )
+    return next({ name: 'MissingName', message: 'name missing in the request' })
   }
   else if (!body.number) {
-    return next( { name: 'MissingNumber', message: 'number missing in the request'} )
+    return next({ name: 'MissingNumber', message: 'number missing in the request' })
   }
 
   const person = new Person({
@@ -127,7 +127,7 @@ app.use(unknownEndpoint)
 const errorHandler = (error, req, res, next) => {
   console.error(error.message)
 
-  if (error.name === 'CastError' && error.kind == 'ObjectId') {
+  if (error.name === 'CastError' && error.kind === 'ObjectId') {
     return res.status(400).send({ error: 'malformatted id' })
   } else if (error.name === 'MissingName') {
     return res.status(400).json({ error: 'name missing' })
@@ -136,7 +136,7 @@ const errorHandler = (error, req, res, next) => {
   } else if (error.name === 'ValidationError') {
     return res.status(400).json({ error: error.message })
   } else if (error.name === 'InvalidLength') {
-    return res.status(400).json({ error: error.message})
+    return res.status(400).json({ error: error.message })
   } else {
     res.status(404).end()
   }
