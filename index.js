@@ -80,7 +80,7 @@ app.delete('/api/persons/:id', (req, res, next) => {
 app.put('/api/persons/:id', (req, res, next) => {
   const body = req.body
 
-  if (body.number.length < 3) {
+  if (body.number.length < 8) {
     return next( { name: 'InvalidLength', message: `minimum length required for the number is 8 (curr length: ${body.number.length})` } )
   }
 
