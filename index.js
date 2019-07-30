@@ -80,6 +80,10 @@ app.delete('/api/persons/:id', (req, res, next) => {
 app.put('/api/persons/:id', (req, res, next) => {
   const body = req.body
 
+  if (body.number.length < 3) {
+    return next( { name: 'InvalidLength', message: `minimum length required for the number is 8 (curr length: ${body.number.length})` } )
+  }
+
   const person = {
     name: body.name,
     number: body.number
@@ -111,6 +115,7 @@ app.post('/api/persons', (req, res, next) => {
     .then(savedPerson => {
       res.json(savedPerson.toJSON())
     })
+    .catch(error => next(error))
 })
 
 const unknownEndpoint = (req, res) => {
@@ -128,6 +133,10 @@ const errorHandler = (error, req, res, next) => {
     return res.status(400).json({ error: 'name missing' })
   } else if (error.name === 'MissingNumber') {
     return res.status(400).json({ error: 'number missing' })
+  } else if (error.name === 'ValidationError') {
+    return res.status(400).json({ error: error.message })
+  } else if (error.name === 'InvalidLength') {
+    return res.status(400).json({ error: error.message})
   } else {
     res.status(404).end()
   }
